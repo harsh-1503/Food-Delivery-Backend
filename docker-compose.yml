@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/foodStop
+      - SPRING_DATASOURCE_USERNAME=foodStop
+      - SPRING_DATASOURCE_PASSWORD=Harsh@1345
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SPRING_JPA_DATABASE_PLATFORM=org.hibernate.dialect.MySQL8Dialect
+
+  db:
+    image: mysql:8
+    environment:
+      MYSQL_ROOT_PASSWORD: 0765
+      MYSQL_DATABASE: foodStop
+      MYSQL_USER: foodStop
+      MYSQL_PASSWORD: Harsh@1345
+    ports:
+      - "3306:3306"
