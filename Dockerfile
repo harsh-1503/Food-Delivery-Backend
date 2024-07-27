@@ -1,17 +1,18 @@
-# Use a base image with Java runtime environment
+
+FROM maven:3.8.5-openjdk-17 AS build
+COPY . .
+
+
+RUN mvn clean package -DskipTests
+
+
 FROM openjdk:17-jdk-alpine
 
-# Add a volume pointing to /tmp
-VOLUME /tmp
 
-# Make port 8000 available to the world outside this container
+
 EXPOSE 8000
 
-# The application's jar file
-ARG JAR_FILE=target/*.jar
+COPY --from=build /target/Online-Food-Ordering-0.0.1-SNAPSHOT.jar app.jar
 
-# Add the application's jar to the container
-ADD ${JAR_FILE} app.jar
 
-# Run the jar file
-ENTRYPOINT ["java","-jar","/app.jar"]
+ENTRYPOINT ["java", "-jar", "/app.jar"]
